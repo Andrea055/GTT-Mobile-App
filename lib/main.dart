@@ -1,7 +1,16 @@
+import 'dart:async';
+import 'dart:isolate';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'gttapi.dart';
-void main() {
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+void main() async{
   runApp(const MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,8 +23,12 @@ class MyApp extends StatelessWidget {
       title: 'Orari GTT',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
+        brightness: Brightness.dark,
       ),
-      home: const MyHomePage(title: 'Orari Bus GTT'),
+      home: const DefaultTabController(
+        length: 1,
+        child: MyHomePage(title: 'Orari Bus GTT'),
+      ),
     );
   }
 }
@@ -31,6 +44,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<dynamic> stops = [];
+  bool spinner = false;
+  String stopName = "";
   @override
   Widget build(BuildContext context) {
     var input = TextEditingController();
@@ -38,29 +53,77 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.train),
+            label: 'Cerca',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Mappa',
+          ),
+        ],
+        currentIndex: 0,
+        selectedItemColor: Colors.amber[800],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children:  <Widget>[
-
             const Text("\n"),
+            Text(stopName),
             TextField(
               controller: input,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: () {
+                      stops = [];
+                      setState(() {spinner = true;});
                       final GTTAPI api = GTTAPI();
-                      api.getstop(input.text).then((value) {
-                        stops = value;
-                        setState(() {});
+                      final StopDB db = StopDB();
+                      db.readStops(input.text).then((stopRaw) {
+                        api.getstop(input.text).then((value) async{
+                          if(value.isEmpty){
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Fermata non trovata'),
+                                content: const Text('La fermata non è presente nel database GTT, probabilmente, il numero inserito non è corretto.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, 'Ok');
+                                      spinner = false;
+                                    },
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }else{
+                            setState(() {
+                              stopName = stopRaw[0];
+                              stops = value;
+                              spinner = false;
+                            });
+                          }
+                        });
                       });
+
                     },
                   ),
                 )
             ),
+            const Text("\n"),
+            if(spinner)
+              const SpinKitCircle(
+                color: Colors.white,
+                size: 120.0,
+              ),
             SizedBox(
-              height: 700,
+              height: 450,
               child: ListView.separated(
                 padding: const EdgeInsets.all(8),
                 itemCount: stops.length,
@@ -70,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Container(
                     height: 70,
                     width: 400,
-                    color: Colors.grey,
+                    color: Colors.blueGrey,
                     child: Row(
                         children: <Widget>[
                           Text(" ${stops[index]["Linea"]}"),

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "736815774564",
+    "project_id": "gtt-app-ca92a",
+    "storage_bucket": "gtt-app-ca92a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736815774564:android:b04f3ef0ba67593cea9871",
+        "android_client_info": {
+          "package_name": "com.example.gtt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736815774564-9f5qkl83cc9snm8ellsl5mkdt19ja5ad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6G755XUUXw2hLF3mE6zK-kMs4-FVpaqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736815774564-9f5qkl83cc9snm8ellsl5mkdt19ja5ad.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "736815774564-h21hs2paa2svotm7klplu5jvifktrn0b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gtt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
