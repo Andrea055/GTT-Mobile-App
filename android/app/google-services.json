@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:736815774564:android:b04f3ef0ba67593cea9871",
         "android_client_info": {
-          "package_name": "com.example.gtt"
+          "package_name": "com.andrea055.gtt"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "736815774564-h21hs2paa2svotm7klplu5jvifktrn0b.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.gtt"
+                "bundle_id": "com.andrea055.gtt"
               }
             }
           ]

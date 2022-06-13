@@ -2,7 +2,7 @@
     package="com.example.gtt">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="gtt"
+        android:label="Orari Bus GTT"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
