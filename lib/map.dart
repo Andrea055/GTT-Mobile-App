@@ -29,7 +29,7 @@ class _Mapview extends State<Mapview> {
         initPosition: GeoPoint(latitude: lat, longitude: long));
 
     return Scaffold(
-        appBar: AppBar(title: Text(fermata), actions: <Widget>[]),
+        appBar: AppBar(title: Text(fermata), actions: const <Widget>[]),
         body: Center(
             child: Stack(children: <Widget>[
           OSMFlutter(
@@ -51,7 +51,7 @@ class _Mapview extends State<Mapview> {
               minZoomLevel: 8,
               maxZoomLevel: 14,
               stepZoom: 1.0),
-          Container(
+          SizedBox(
               width: 2000,
               height: 100,
               child: Center(
@@ -74,7 +74,7 @@ class _Mapview extends State<Mapview> {
                 },
               ),
               ElevatedButton(
-                child: Text("-"),
+                child: const Text("-"),
                 onPressed: () async {
                   await controller.zoomOut();
                 },

@@ -45,8 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<dynamic> stops = [];
   bool spinner = false;
   String stopName = "";
-  double Lat = 45.0735;
-  double Lon = 7.6757;
+  double lat = 45.0735;
+  double lon = 7.6757;
   @override
   Widget build(BuildContext context) {
     var input = TextEditingController();
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Mapview(lat: Lat, long: Lon, fermata: stopName)),
+                        Mapview(lat: lat, long: lon, fermata: stopName)),
               );
               break;
             default:
@@ -123,10 +123,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           } else {
                             setState(() {
                               stopName = stopRaw[0];
-                              Lat = stopRaw[1];
-                              Lon = stopRaw[2];
-                              print(Lat);
-                              print(Lon);
+                              lat = stopRaw[1];
+                              lon = stopRaw[2];
                               stops = value;
                               spinner = false;
                             });
