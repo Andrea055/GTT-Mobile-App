@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'map.dart';
+import 'news.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       home: const DefaultTabController(
-        length: 1,
+        length: 2,
         child: MyHomePage(title: 'Orari Bus GTT'),
       ),
     );
@@ -65,6 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         Mapview(lat: lat, long: lon, fermata: stopName)),
               );
               break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Newsview()),
+              );
+              break;
             default:
               break;
           }
@@ -77,6 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Mappa',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.newspaper),
+            label: 'Avvisi e notizie',
           ),
         ],
         currentIndex: 0,
