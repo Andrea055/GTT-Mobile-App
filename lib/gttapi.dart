@@ -1,22 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class StopDB {
   var db = FirebaseFirestore.instance;
   var test = [];
   Future<List> readStops(String stopid) async {
     var stopData = [];
-    await db.collection("fermate").get().then((event) {
-      for (var i = 0; i < event.docs.length; i++) {
-        var stop = event.docs[i].data();
-        if (stop["stopCode"] == int.parse(stopid)) {
-          stopData.add(stop["stopName"]);
-          stopData.add(stop["stopLat"]);
-          stopData.add(stop["stopLon"]);
-        }
+    var stopsRaw = await rootBundle.loadString('assets/stops.json');
+    var stops = jsonDecode(stopsRaw);
+    for (var i = 0; i < stops.length; i++) {
+      if (stops[i]["stop_code"] == int.parse(stopid)) {
+        stopData.add(stops[i]["stop_name"]);
+        stopData.add(stops[i]["stop_lat"]);
+        stopData.add(stops[i]["stop_lon"]);
       }
-    });
+    }
     return stopData;
   }
 }
