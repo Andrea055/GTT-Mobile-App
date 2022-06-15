@@ -41,6 +41,7 @@ dependencies:
   url_launcher: ^6.1.3
   firebase_crashlytics: ^2.8.1
   firebase_performance: ^0.8.0+13
+  icons_animate: ^0.0.2
   
 dev_dependencies:
   flutter_test:

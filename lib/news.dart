@@ -41,10 +41,10 @@ class _Newsview extends State<Newsview> {
       return Scaffold(
           appBar:
               AppBar(title: const Text("Notizie"), actions: const <Widget>[]),
-          body: const Center(
+          body: Center(
               child: Center(
             child: SpinKitCircle(
-              color: Colors.white,
+              color: Colors.amber[800],
               size: 120.0,
             ),
           )));
@@ -59,10 +59,12 @@ class _Newsview extends State<Newsview> {
                   padding: const EdgeInsets.all(8),
                   itemCount: titoli.length,
                   itemBuilder: (BuildContext context, int index) {
+                    Color textcolor = Color.fromARGB(255, 84, 129, 168);
+
                     return SizedBox(
                       height: 50,
                       child: TextButton(
-                        style: TextButton.styleFrom(primary: Colors.white),
+                        style: TextButton.styleFrom(primary: textcolor),
                         child: Text(titoli[index].title),
                         onPressed: () async {
                           return showDialog<void>(
@@ -82,7 +84,7 @@ class _Newsview extends State<Newsview> {
                                 actions: <Widget>[
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                        primary: Colors.white),
+                                        primary: textcolor),
                                     child: const Text('Ok'),
                                     onPressed: () {
                                       Navigator.of(context).pop();

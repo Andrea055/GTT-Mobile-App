@@ -6,9 +6,12 @@ import 'firebase_options.dart';
 import 'map.dart';
 import 'news.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:icons_animate/icons_animate.dart';
+
+final ValueNotifier<ThemeMode> _notifier = ValueNotifier(ThemeMode.system);
 
 void main() async {
-  runApp(const MyApp());
+  runApp(MyApp());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -18,22 +21,25 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Orari GTT',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        brightness: Brightness.dark,
-      ),
-      home: const DefaultTabController(
-        length: 2,
-        child: MyHomePage(title: 'Orari Bus GTT'),
-      ),
-    );
+    return ValueListenableBuilder<ThemeMode>(
+        valueListenable: _notifier,
+        builder: (_, mode, __) {
+          return MaterialApp(
+            title: 'Orari GTT',
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: mode,
+            home: const DefaultTabController(
+              length: 2,
+              child: MyHomePage(title: 'Orari Bus GTT'),
+            ),
+          );
+        });
   }
 }
 
@@ -52,12 +58,62 @@ class _MyHomePageState extends State<MyHomePage> {
   String stopName = "";
   double lat = 45.0735;
   double lon = 7.6757;
+  AnimateIconController controller = AnimateIconController();
+
   @override
   Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
     var input = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          if (isDarkMode)
+            AnimateIcons(
+              startIcon: Icons.sunny,
+              endIcon: Icons.brightness_2,
+              size: 32.0,
+              controller: controller,
+              startTooltip: 'Attiva la modalità chiara',
+              endTooltip: 'Attiva la modalità scura',
+              splashRadius: 24,
+              onStartIconPress: () {
+                _notifier.value = ThemeMode.light;
+                return true;
+              },
+              onEndIconPress: () {
+                _notifier.value = ThemeMode.dark;
+                return true;
+              },
+              duration: const Duration(milliseconds: 500),
+              startIconColor: const Color.fromARGB(255, 255, 255, 255),
+              endIconColor: const Color.fromARGB(255, 255, 255, 255),
+              clockwise: false,
+            )
+          else
+            AnimateIcons(
+              startIcon: Icons.brightness_2,
+              endIcon: Icons.sunny,
+              size: 32.0,
+              controller: controller,
+              startTooltip: 'Attiva la modalità scura',
+              endTooltip: 'Attiva la modalità chiara',
+              splashRadius: 24,
+              onStartIconPress: () {
+                _notifier.value = ThemeMode.dark;
+                return true;
+              },
+              onEndIconPress: () {
+                _notifier.value = ThemeMode.light;
+                return true;
+              },
+              duration: const Duration(milliseconds: 500),
+              startIconColor: const Color.fromARGB(255, 255, 255, 255),
+              endIconColor: const Color.fromARGB(255, 255, 255, 255),
+              clockwise: false,
+            )
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
@@ -152,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text("\n"),
             if (spinner)
               const SpinKitCircle(
-                color: Colors.white,
+                color: Color.fromARGB(255, 214, 153, 89),
                 size: 120.0,
               ),
             SizedBox(
@@ -166,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     return Container(
                       height: 70,
                       width: 400,
-                      color: Colors.blueGrey,
+                      color: Colors.transparent,
                       child: Row(children: <Widget>[
                         Text(" ${stops[index]["Linea"]}"),
                         const Text(" "),
